@@ -7,50 +7,48 @@ export default function Footer() {
     const t = content.footer;
 
     return (
-        <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8 mt-12">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 text-sm sm:text-base">
+        <footer className="bg-gray-900 text-white pt-10 pb-6 px-4 sm:px-6 lg:px-8 mt-12">
+            <div className="max-w-6xl mx-auto flex flex-col gap-8 text-sm sm:text-base">
 
-                <address
-                    className="not-italic text-center md:text-left text-sm sm:text-base md:text-[15px] leading-relaxed space-y-2"
-                    aria-label="Kontaktinformationen"
-                >
-                    <h4 className="text-lg sm:text-xl font-semibold mb-2">{t.contact}</h4>
-                    <p>{t.address}</p>
-                    <p>{t.phone}</p>
-                    <p>
-                        <Link href={`mailto:${t.email}`} className="hover:underline break-words">
-                            {t.email}
+                {/* Верхній рядок: контакти + навігація */}
+                <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-10 md:gap-x-20">
+
+                    {/* Контакти */}
+                    <address
+                        className="not-italic text-center md:text-left space-y-1 text-sm sm:text-base md:text-[15px] leading-relaxed max-w-md"
+                        aria-label="Kontaktinformationen"
+                    >
+                        <h4 className="text-lg sm:text-xl font-semibold mb-2">{t.contact}</h4>
+                        <p>{t.address}</p>
+                        <p>{t.phone}</p>
+                        <p>
+                            <Link href={`mailto:${t.email}`} className="hover:underline break-words">
+                                {t.email}
+                            </Link>
+                        </p>
+                    </address>
+
+                    {/* Навігація */}
+                    <nav
+                        className="flex flex-col items-center md:items-start space-y-2 text-sm sm:text-base md:text-[15px]"
+                        aria-label="Footer Navigation"
+                    >
+                        <Link href="/kontakt">
+                            <button className="bg-white text-gray-900 px-6 py-2 rounded-md hover:bg-gray-200 transition w-full max-w-xs md:w-auto text-sm sm:text-base">
+                                {t.schreiben}
+                            </button>
                         </Link>
-                    </p>
-                </address>
+                        <Link href="/" className="hover:underline text-gray-300">Cookie</Link>
+                        <Link href="/" className="hover:underline text-gray-300">Terms</Link>
+                        <Link href="/" className="hover:underline text-gray-300">Privacy Policy</Link>
+                    </nav>
+                </div>
 
-                <nav
-                    className="flex flex-col items-center md:items-start justify-center gap-2 text-center md:text-left text-sm sm:text-base md:text-[15px]"
-                    aria-label="Footer Navigation"
-                >
-                    <Link href="/kontakt">
-                        <button className="bg-white text-gray-900 px-5 sm:px-6 py-2 rounded-md hover:bg-gray-200 transition w-full max-w-xs md:w-auto">
-                            {t.schreiben}
-                        </button>
-                    </Link>
-                    <Link href={`/`} className="hover:underline text-gray-300">
-                        Cookie
-                    </Link>
-                    <Link href={`/`} className="hover:underline text-gray-300">
-                        Terms
-                    </Link>
-                    <Link href={`/`} className="hover:underline text-gray-300">
-                        Privacy Policy
-                    </Link>
-                </nav>
-
-                <section
-                    className="text-center md:text-right text-xs sm:text-sm md:text-[14px] text-gray-400 space-y-1 leading-snug"
-                    aria-label="Copyright"
-                >
+                {/* Нижній рядок: копірайт */}
+                <div className="border-t border-gray-800 pt-4 text-center text-xs sm:text-sm text-gray-400 leading-snug">
                     <p>© {new Date().getFullYear()} Museen Deutschlands</p>
                     <p>Alle Rechte vorbehalten</p>
-                </section>
+                </div>
             </div>
         </footer>
     );
