@@ -15,8 +15,7 @@ export default function MissionPage() {
 
                     <div className="space-y-8 text-gray-800 leading-relaxed text-base sm:text-lg md:text-xl">
                         <p>
-                            <strong>Museen Deutschlands: Kultur und Bewegung</strong> – wurde mit einem einfachen, aber
-                            ehrgeizigen Ziel ins Leben gerufen: die deutschen Museen allen Menschen näher zu bringen...
+                            <strong>Museen Deutschlands: Kultur und Bewegung</strong> – wurde mit einem einfachen, aber ehrgeizigen Ziel ins Leben gerufen: die deutschen Museen allen Menschen näher zu bringen. Wir glauben, dass Kultur nicht nur die Vergangenheit ist, sondern auch der Schlüssel zum Verständnis der Gegenwart und zur Gestaltung der Zukunft. Unser Ziel ist es zu zeigen, wie Museen Menschen mit unterschiedlichen Interessen und Geschichten inspirieren, bilden und verbinden
                         </p>
 
                         <div>
@@ -24,7 +23,7 @@ export default function MissionPage() {
                                 Warum Museen?
                             </h2>
                             <p>
-                                Museen sind mehr als nur Sammlungen von Gegenständen. Sie sind Orte, an denen Geschichte lebendig wird...
+                                Museen sind mehr als nur Sammlungen von Gegenständen. Sie sind Orte, an denen Geschichte lebendig wird, an denen Kunst über die Jahrhunderte hinweg zu uns spricht und an denen uns die Technik zeigt, wie sich die Menschheit weiterentwickelt hat - manchmal im wahrsten Sinne des Wortes, wie in der Welt des Motorsports oder der Luftfahrt. Wir bemühen uns, diese Vielfalt sichtbar zu machen, damit jeder Besucher etwas anderes entdeckt: von antiken Schätzen bis zu Innovationen, von der Stille der Kunstgalerien bis zum Brummen der Motoren.
                             </p>
                         </div>
 
@@ -35,15 +34,15 @@ export default function MissionPage() {
                             <ul className="space-y-4">
                                 <li>
                                     <span className="block font-semibold">Wir erkunden:</span>
-                                    Wir stellen Ihnen die besten Museen in Deutschland vor – von majestätischen Komplexen...
+                                    Wir stellen Ihnen die besten Museen in Deutschland vor - von majestätischen Komplexen wie der Museumsinsel bis zu einzigartigen technischen Schätzen wie dem BMW Museum.
                                 </li>
                                 <li>
                                     <span className="block font-semibold">Wir erzählen:</span>
-                                    Mit interessanten Fakten, Geschichten und Veranstaltungen zeigen wir Ihnen...
+                                    Mit interessanten Fakten, Geschichten und Veranstaltungen zeigen wir Ihnen, warum diese Orte Ihre Zeit wert sind.
                                 </li>
                                 <li>
                                     <span className="block font-semibold">Wir ermutigen:</span>
-                                    Wir wollen, dass Sie nicht nur über Museen lesen, sondern sie besuchen...
+                                    Wir wollen, dass Sie nicht nur über Museen lesen, sondern sie besuchen und neue Horizonte entdecken.
                                 </li>
                             </ul>
                         </div>
@@ -53,7 +52,7 @@ export default function MissionPage() {
                                 Unsere Vision
                             </h2>
                             <p>
-                                Wir träumen davon, dass jeder, der unsere Website besucht, sich mit dem kulturellen Erbe Deutschlands verbunden fühlt...
+                                Wir träumen davon, dass jeder, der unsere Website besucht, sich mit dem kulturellen Erbe Deutschlands verbunden fühlt. Wir wollen, dass Museen nicht nur ein touristisches Ziel sind, sondern Teil einer persönlichen Reise zu Wissen, Inspiration und Selbstentfaltung. Kultur und Bewegung sind das, was uns alle verbindet, und wir sind hier, um Ihnen zu helfen, dies zu spüren.
                             </p>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ export default function Museen() {
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-8 text-center">
-                    Deutschland ist ein Land, in dem Museen das Tor zu verschiedenen Welten sind...
+                    Deutschland ist ein Land, in dem Museen das Tor zu verschiedenen Welten sind: von alten Zivilisationen bis hin zu moderner Technologie. Mit mehr als 6.800 Museen im ganzen Land ist für jeden etwas dabei - egal, ob Sie Kunstliebhaber, Wissenschaftsfan oder jemand sind, der eine Verbindung zur Geschichte sucht. Auf dieser Seite zeigen wir Ihnen die Vielfalt der deutschen Museen und stellen Ihnen ein paar ikonische Einrichtungen vor, die einen Besuch wert sind.
                 </p>
 
                 <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">
@@ -51,7 +51,7 @@ export default function Museen() {
                 </h3>
 
                 <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-12 text-center">
-                    Museen in Deutschland sind nicht einfach nur Gebäude mit Exponaten...
+                    Museen in Deutschland sind nicht einfach nur Gebäude mit Exponaten. Sie vereinen einzigartige Architektur, reiche Sammlungen und innovative Präsentationskonzepte. Hier finden Sie alles, von majestätischen Sälen mit Gemälden alter Meister bis hin zu interaktiven Räumen, in denen Sie Wissenschaft zum Anfassen erleben oder sich sogar wie ein Pilot oder Rennfahrer fühlen können. Jedes Museum ist eine Reise, die neue Facetten von Kultur, Geschichte und menschlichen Errungenschaften offenbart.
                 </p>
 
                 {/* Блок 1 карточка */}

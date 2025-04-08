@@ -38,7 +38,7 @@ export default function Events() {
                 </h2>
 
                 <div ref={sliderRef} className="keen-slider">
-                    {t.list.map(({ title, place, date, image }, idx) => (
+                    {t.list.map(({ title, place, date,description, image }, idx) => (
                         <div
                             key={idx}
                             className="keen-slider__slide flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm"
@@ -55,6 +55,7 @@ export default function Events() {
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
                             <p className="text-gray-600 text-sm sm:text-base">{place}</p>
+                            <p className="text-gray-600 text-sm sm:text-base">{description}</p>
                             <p className="text-sm text-gray-500">{date}</p>
                         </div>
                     ))}
