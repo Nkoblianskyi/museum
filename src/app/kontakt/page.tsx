@@ -24,31 +24,36 @@ export default function Contact() {
     return (
         <section
             id="contact"
-            className="relative py-16 px-4 sm:px-6 lg:px-8 mt-2 overflow-hidden"
+            className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
         >
             <div className="absolute inset-0">
                 <Image
                     src="/contact.jpg"
                     alt="Background"
                     fill
-                    className="object-cover opacity-75"
+                    className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black opacity-40"></div>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             </div>
 
-            <div className="relative max-w-lg mx-auto">
-                <h2 className="text-3xl md:text-4xl font-semibold text-center mb-8 text-white">
+            <div className="relative max-w-xl mx-auto">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-10 text-white">
                     {t.title}
                 </h2>
-                <form onSubmit={handleSubmit} className="bg-white border border-gray-300 rounded-lg p-6 space-y-6">
-                    <div className="grid gap-4">
+
+                <form
+                    onSubmit={handleSubmit}
+                    className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-lg"
+                >
+                    <div className="grid gap-5">
                         <input
                             type="text"
                             name="name"
                             placeholder={t.name}
                             value={formData.name}
                             onChange={handleChange}
-                            className="block w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 transition placeholder-gray-500"
+                            required
+                            className="w-full border border-gray-300 rounded-md py-2.5 px-4 placeholder-gray-500 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                         />
                         <input
                             type="email"
@@ -56,13 +61,15 @@ export default function Contact() {
                             placeholder={t.email}
                             value={formData.email}
                             onChange={handleChange}
-                            className="block w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 transition placeholder-gray-500"
+                            required
+                            className="w-full border border-gray-300 rounded-md py-2.5 px-4 placeholder-gray-500 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                         />
                         <select
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="block w-full border border-gray-300 rounded-md py-2 px-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                            required
+                            className="w-full border border-gray-300 rounded-md py-2.5 px-4 bg-white text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                         >
                             <option value="">{t.category}</option>
                             {t.options.map((option, index) => (
@@ -73,16 +80,18 @@ export default function Contact() {
                         </select>
                         <textarea
                             name="message"
-                            placeholder="message"
+                            placeholder="Nachricht..."
                             value={formData.message}
                             onChange={handleChange}
-                            className="block w-full border border-gray-300 rounded-md py-2 px-4 h-32 focus:outline-none focus:ring-2 focus:ring-blue-400 transition placeholder-gray-500"
+                            required
+                            className="w-full border border-gray-300 rounded-md py-2.5 px-4 h-32 resize-none placeholder-gray-500 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                         ></textarea>
                     </div>
-                    <div className="text-center">
+
+                    <div className="pt-4 flex justify-center md:justify-end">
                         <button
                             type="submit"
-                            className="bg-black text-white w-full md:w-auto px-6 py-3 rounded-md hover:bg-gray-800 transition"
+                            className="bg-black text-white px-6 py-3 rounded-md text-sm sm:text-base hover:bg-gray-800 transition"
                         >
                             {t.submit}
                         </button>

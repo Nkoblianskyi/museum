@@ -31,7 +31,6 @@ export default function Heritage() {
 
     return (
         <>
-            {/* Мікродані */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

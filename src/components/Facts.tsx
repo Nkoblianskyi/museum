@@ -1,70 +1,77 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import content from '@/i18n/de';
+import { useKeenSlider } from 'keen-slider/react';
+import 'keen-slider/keen-slider.min.css';
 
-export default function Facts() {
-    const t = content.facts;
+export default function Events() {
+    const t = content.events;
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // Автоматичне перемикання слайдів кожні 5 секунд
+    const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+        {
+            loop: true,
+            slides: { perView: 1 },
+            drag: true,
+            slideChanged(slider) {
+                setCurrentSlide(slider.track.details.rel);
+            },
+        },
+        []
+    );
+
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentSlide((prevSlide) => (prevSlide + 1) % t.list.length);
+            instanceRef.current?.next();
         }, 5000);
-        return () => clearInterval(interval);
-    }, [t.list.length]);
 
-    // Зміна слайду при кліку на пагінацію
-    const goToSlide = (index: number) => {
-        setCurrentSlide(index);
-    };
+        return () => clearInterval(interval);
+    }, [instanceRef]);
 
     return (
-        <section id="facts" className="py-16 px-6 bg-white">
-            <div className="max-w-5xl mx-auto">
-                <h2 className="text-3xl font-semibold mb-8 text-center">{t.title}</h2>
+        <section id="events" className="py-16 px-4 sm:px-6 md:px-10 bg-white">
+            <div className="max-w-5xl mx-auto text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-gray-800">
+                    {t.title}
+                </h2>
 
-                <div className="relative">
-                    {/* Карусель */}
-                    <div className="overflow-hidden rounded-xl shadow-lg">
+                <div ref={sliderRef} className="keen-slider">
+                    {t.list.map(({ title, place, date, image }, idx) => (
                         <div
-                            className="flex transition-transform duration-500 ease-in-out"
-                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                            key={idx}
+                            className="keen-slider__slide flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm"
                         >
-                            {t.list.map((fact, idx) => (
-                                <div key={idx} className="flex-shrink-0 w-full flex justify-center">
-                                    <div className="bg-gray-50 p-6 flex flex-col items-center w-full">
-                                        <h3 className="text-xl font-semibold mb-2">{fact.title}</h3>
-                                        <p className="text-gray-700 mb-4">{fact.text}</p>
-                                        {/* Контейнер для зображення з обмеженням по висоті */}
-                                        <div className="relative w-full max-h-screen overflow-hidden">
-                                            <Image
-                                                src={fact.image}
-                                                alt={fact.title}
-                                                width={1200}   // базова ширина для збереження співвідношення
-                                                height={675}   // співвідношення 16:9
-                                                className="rounded-lg shadow-md object-contain"
-                                                sizes="(max-width: 768px) 100vw, 50vw"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                            <div className="relative w-full h-[220px] sm:h-[300px] md:h-[400px] mb-4">
+                                <Image
+                                    src={image}
+                                    alt={title}
+                                    fill
+                                    className="rounded-lg object-cover"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 75vw, 50vw"
+                                />
+                            </div>
+                            <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
+                            <p className="text-gray-600 text-sm sm:text-base">{place}</p>
+                            <p className="text-sm text-gray-500">{date}</p>
                         </div>
-                    </div>
+                    ))}
+                </div>
 
-                    {/* Пагінація */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
-                        {t.list.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => goToSlide(index)}
-                                className={`w-3 h-3 rounded-full ${index === currentSlide ? 'bg-black' : 'bg-gray-400'} transition-all`}
-                            ></button>
-                        ))}
-                    </div>
+                {/* Пагінація */}
+                <div className="mt-6 flex justify-center gap-3">
+                    {t.list.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => instanceRef.current?.moveToIdx(idx)}
+                            aria-label={`Перейти до слайду ${idx + 1}`}
+                            className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 border-2 ${currentSlide === idx
+                                    ? 'bg-black border-black scale-110'
+                                    : 'bg-white border-gray-400'
+                                }`}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

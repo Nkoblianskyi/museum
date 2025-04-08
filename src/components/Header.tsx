@@ -40,12 +40,9 @@ export default function Header() {
             <nav className="space-y-4">
                 {links.map(({ href, label }, index) => {
                     const isAnchor = href.startsWith('#');
-                    // Якщо посилання якірне, формуємо шлях як "/#hero", щоб завжди повернутися на головну
+
                     const fullHref = isAnchor ? `/${href}` : href;
 
-                    // Активність визначається:
-                    // Для якірних –, якщо на головній сторінці і поточний хеш співпадає з посиланням
-                    // Для звичайних – якщо поточний шлях рівний посиланню
                     const isActive = isAnchor
                         ? pathname === '/' && currentHash === href
                         : pathname === href;

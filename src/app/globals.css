@@ -33,7 +33,7 @@ body {
 }
 
 button {
-  background-color: #8E5B3A;
+  background-color: #3b332e;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -41,7 +41,7 @@ button {
 }
 
 button:hover {
-  background-color: #4A2C1B;
+  background-color: #53321f;
 }
 
 img {
