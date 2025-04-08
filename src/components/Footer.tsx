@@ -31,7 +31,6 @@ export default function Footer() {
                     </Link>
                 </nav>
 
-                {/* Авторські права */}
                 <section className="text-center md:text-right text-xs sm:text-sm text-gray-400 space-y-1" aria-label="Copyright">
                     <p>© {new Date().getFullYear()} Museen Deutschlands</p>
                     <p>Alle Rechte vorbehalten</p>

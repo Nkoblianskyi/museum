@@ -66,7 +66,6 @@ export default function Facts() {
                     ))}
                 </div>
 
-                {/* Пагінація */}
                 <div className="mt-6 flex justify-center gap-3">
                     {t.list.map((_, idx) => (
                         <button
