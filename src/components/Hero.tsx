@@ -55,13 +55,13 @@ export default function Hero() {
                 {/* Content */}
                 <div className="relative z-10 text-center text-white space-y-6 max-w-4xl">
                     <h1
-                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow"
+                        className="text-2xl sm:text-3xl md:text-2xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow"
                         itemProp="name"
                     >
                         {t.title}
                     </h1>
                     <p
-                        className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 drop-shadow"
+                        className="text-base sm:text-lg md:text-md lg:text-xl text-gray-200 drop-shadow"
                         itemProp="description"
                     >
                         {t.description}
