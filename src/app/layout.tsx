@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Header from '../components/Header';
 import MobileHeader from '../components/MobileHeader';
 import Footer from '../components/Footer';
+import CookieConsent from '@/components/CookieConsent';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
 
           <main className="row-start-2 md:row-start-1 col-span-full md:col-start-2 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
             {children}
+            <CookieConsent />
           </main>
 
           <footer className="row-start-3 md:row-start-2 col-span-full md:col-start-2">
