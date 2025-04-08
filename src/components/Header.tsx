@@ -11,10 +11,10 @@ export default function Header() {
     const [currentHash, setCurrentHash] = useState('');
 
     useEffect(() => {
-        setCurrentHash(window.location.hash);
-        const handleHashChange = () => setCurrentHash(window.location.hash);
-        window.addEventListener('hashchange', handleHashChange);
-        return () => window.removeEventListener('hashchange', handleHashChange);
+        const updateHash = () => setCurrentHash(window.location.hash);
+        updateHash();
+        window.addEventListener('hashchange', updateHash);
+        return () => window.removeEventListener('hashchange', updateHash);
     }, []);
 
     const links = [
@@ -22,7 +22,7 @@ export default function Header() {
         { href: '#why', label: t.warum },
         { href: '#heritage', label: t.erbe },
         { href: '#facts', label: t.fakten },
-        { href: '#diversity', label: t.vielfalt },
+        { href: '#museen-preview', label: t.vielfalt },
         { href: '#events', label: t.veranstaltungen },
         { href: '/museen', label: t.museen },
         { href: '/mission', label: t.mission },
@@ -37,7 +37,6 @@ export default function Header() {
             <nav className="space-y-4">
                 {links.map(({ href, label }, index) => {
                     const isAnchor = href.startsWith('#');
-                    const fullHref = isAnchor ? `/${href}` : href;
                     const isActive = isAnchor
                         ? pathname === '/' && currentHash === href
                         : pathname === href;
@@ -45,10 +44,18 @@ export default function Header() {
                     return (
                         <Link
                             key={index}
-                            href={fullHref}
+                            href={isAnchor ? `/${href}` : href}
+                            scroll={false}
+                            onClick={() => {
+                                if (isAnchor) {
+                                    const el = document.querySelector(href);
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                    setCurrentHash(href);
+                                }
+                            }}
                             className={`block transition px-1 ${isActive
-                                    ? 'text-black font-semibold border-l-4 border-black pl-2'
-                                    : 'text-gray-800 hover:text-black'
+                                ? 'text-black font-semibold border-l-4 border-black pl-2'
+                                : 'text-gray-800 hover:text-black'
                                 }`}
                         >
                             {label}

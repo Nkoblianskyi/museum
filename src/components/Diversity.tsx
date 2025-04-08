@@ -4,7 +4,7 @@ import content from '@/i18n/de';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function MuseenGrid() {
+export default function Diversity () {
     const t = content.museen;
     const router = useRouter();
 
