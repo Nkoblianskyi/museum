@@ -38,9 +38,9 @@ export default function Footer() {
                                 {t.schreiben}
                             </button>
                         </Link>
-                        <Link href="/" className="hover:underline text-gray-300">Cookie</Link>
-                        <Link href="/" className="hover:underline text-gray-300">Terms</Link>
-                        <Link href="/" className="hover:underline text-gray-300">Privacy Policy</Link>
+                        <Link href="/cookie" className="hover:underline text-gray-300">Cookie</Link>
+                        <Link href="/terms-page" className="hover:underline text-gray-300">Terms</Link>
+                        <Link href="/privacy-page" className="hover:underline text-gray-300">Privacy Policy</Link>
                     </nav>
                 </div>
 
