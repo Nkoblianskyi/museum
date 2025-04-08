@@ -11,11 +11,8 @@ export default function Header() {
     const [currentHash, setCurrentHash] = useState('');
 
     useEffect(() => {
-        // Встановлюємо початковий хеш із вікна
         setCurrentHash(window.location.hash);
-        const handleHashChange = () => {
-            setCurrentHash(window.location.hash);
-        };
+        const handleHashChange = () => setCurrentHash(window.location.hash);
         window.addEventListener('hashchange', handleHashChange);
         return () => window.removeEventListener('hashchange', handleHashChange);
     }, []);
@@ -34,15 +31,13 @@ export default function Header() {
 
     return (
         <aside
-            className="fixed left-0 top-0 h-full w-54 bg-white shadow-md p-6 flex flex-col justify-between z-50"
+            className="hidden md:flex fixed left-0 top-0 h-full w-56 bg-white shadow-md p-6 flex-col justify-between z-50"
             aria-label="Hauptnavigation"
         >
             <nav className="space-y-4">
                 {links.map(({ href, label }, index) => {
                     const isAnchor = href.startsWith('#');
-
                     const fullHref = isAnchor ? `/${href}` : href;
-
                     const isActive = isAnchor
                         ? pathname === '/' && currentHash === href
                         : pathname === href;

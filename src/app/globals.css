@@ -1,8 +1,8 @@
-
 @import 'keen-slider/keen-slider.min.css';
 
 
 @import 'tailwindcss';
+
 
 
 body {
@@ -10,6 +10,7 @@ body {
   color: #121212;
   font-family: 'Inter', sans-serif;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 .bg-brown-light {

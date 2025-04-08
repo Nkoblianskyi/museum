@@ -1,6 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Header from '../components/Header';
+import MobileHeader from '../components/MobileHeader';
 import Footer from '../components/Footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
@@ -17,17 +18,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className={`${inter.className} bg-gray-50`}>
-        <div className="flex min-h-screen">
+      <body
+        className={`${inter.className} bg-gray-50 overflow-x-hidden text-gray-900`}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] grid-rows-[auto_1fr_auto] min-h-screen max-w-full overflow-x-hidden">
 
-          <div className="fixed left-0 top-0 h-full w-54 bg-white shadow-md z-50">
+          {/* Мобільне меню (показується лише на маленьких екранах) */}
+          <div className="md:hidden col-span-full row-start-1 z-50">
+            <MobileHeader />
+          </div>
+
+          {/* Сайдбар */}
+          <aside className="hidden md:block bg-white shadow-md h-screen sticky top-0 left-0 row-span-3 z-40">
             <Header />
-          </div>
+          </aside>
 
-          <div className="flex flex-col flex-1 ml-54 md:ml-56">
-            <main className="flex-1">{children}</main>
+          {/* Контент */}
+          <main className="col-span-full md:col-start-2 row-start-2 p-4 sm:p-6 lg:p-8">
+            {children}
+          </main>
+
+          {/* Футер */}
+          <footer className="col-span-full md:col-start-2 row-start-3">
             <Footer />
-          </div>
+          </footer>
         </div>
       </body>
     </html>

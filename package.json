@@ -11,6 +11,7 @@
   "dependencies": {
     "i18n": "^0.15.1",
     "keen-slider": "^6.8.6",
+    "lucide-react": "^0.487.0",
     "next": "15.2.4",
     "next-seo": "^6.6.0",
     "react": "^19.0.0",

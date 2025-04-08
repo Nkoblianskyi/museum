@@ -44,30 +44,36 @@ export default function Hero() {
             />
             <section
                 id="hero"
+                className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-cover bg-center"
                 style={{ backgroundImage: "url('/hero.jpg')" }}
-                className="min-h-[90vh] mt-2 flex flex-col justify-center items-center gap-6 px-4 sm:px-6 lg:px-8 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
                 itemScope
                 itemType="http://schema.org/CreativeWork"
             >
-                <h1
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight max-w-full sm:max-w-3xl text-center text-white drop-shadow"
-                    itemProp="name"
-                >
-                    {t.title}
-                </h1>
-                <p
-                    className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-full sm:max-w-2xl text-gray-200 text-center drop-shadow"
-                    itemProp="description"
-                >
-                    {t.description}
-                </p>
-                <Link
-                    href="#why"
-                    className="mt-4 inline-block px-4 py-2 bg-black text-white text-sm sm:text-base rounded hover:bg-gray-800 transition"
-                    itemProp="url"
-                >
-                    {t.button}
-                </Link>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/60"></div>
+
+                {/* Content */}
+                <div className="relative z-10 text-center text-white space-y-6 max-w-4xl">
+                    <h1
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow"
+                        itemProp="name"
+                    >
+                        {t.title}
+                    </h1>
+                    <p
+                        className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 drop-shadow"
+                        itemProp="description"
+                    >
+                        {t.description}
+                    </p>
+                    <Link
+                        href="#why"
+                        className="inline-block px-6 py-3 bg-white text-black font-medium text-sm sm:text-base rounded-lg hover:bg-gray-100 transition"
+                        itemProp="url"
+                    >
+                        {t.button}
+                    </Link>
+                </div>
             </section>
         </>
     );

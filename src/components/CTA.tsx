@@ -17,14 +17,14 @@ export default function CTA() {
                     {t.title}
                 </h2>
 
-                <p className="text-sm sm:text-base md:text-lg text-gray-700 px-2 sm:px-6">
+                <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed px-2 sm:px-6">
                     {t.text}
                 </p>
 
-                <div>
+                <div className="pt-2 sm:pt-4">
                     <button
                         onClick={() => router.push('/kontakt')}
-                        className="mt-4 sm:mt-6 bg-black text-white px-5 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base md:text-lg rounded-lg hover:bg-gray-800 transition duration-300"
+                        className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg rounded-lg hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition duration-300"
                     >
                         {t.button}
                     </button>

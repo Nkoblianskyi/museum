@@ -6,8 +6,8 @@ import content from '@/i18n/de';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 
-export default function Events() {
-    const t = content.events;
+export default function Facts() {
+    const t = content.facts;
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
@@ -31,30 +31,37 @@ export default function Events() {
     }, [instanceRef]);
 
     return (
-        <section id="events" className="py-16 px-4 sm:px-6 md:px-10 bg-white">
+        <section
+            id="facts"
+            className="bg-white overflow-hidden py-14 px-4 sm:px-6 md:px-10"
+        >
             <div className="max-w-5xl mx-auto text-center">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-gray-800">
                     {t.title}
                 </h2>
 
                 <div ref={sliderRef} className="keen-slider">
-                    {t.list.map(({ title, place, date, image }, idx) => (
+                    {t.list.map((fact, idx) => (
                         <div
                             key={idx}
-                            className="keen-slider__slide flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm"
+                            className="keen-slider__slide flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 sm:p-6 md:p-8 shadow-md"
                         >
-                            <div className="relative w-full h-[220px] sm:h-[300px] md:h-[400px] mb-4">
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 text-gray-900 text-center">
+                                {fact.title}
+                            </h3>
+                            <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-5 sm:mb-6 text-center leading-relaxed max-w-2xl">
+                                {fact.text}
+                            </p>
+                            <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden">
                                 <Image
-                                    src={image}
-                                    alt={title}
+                                    src={fact.image}
+                                    alt={fact.title}
                                     fill
-                                    className="rounded-lg object-cover"
+                                    className="object-cover"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 75vw, 50vw"
+                                    priority={idx === 0}
                                 />
                             </div>
-                            <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
-                            <p className="text-gray-600 text-sm sm:text-base">{place}</p>
-                            <p className="text-sm text-gray-500">{date}</p>
                         </div>
                     ))}
                 </div>
@@ -66,9 +73,10 @@ export default function Events() {
                             key={idx}
                             onClick={() => instanceRef.current?.moveToIdx(idx)}
                             aria-label={`Перейти до слайду ${idx + 1}`}
+                            aria-pressed={currentSlide === idx}
                             className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 border-2 ${currentSlide === idx
-                                    ? 'bg-black border-black scale-110'
-                                    : 'bg-white border-gray-400'
+                                ? 'bg-black border-black scale-110'
+                                : 'bg-white border-gray-400'
                                 }`}
                         />
                     ))}

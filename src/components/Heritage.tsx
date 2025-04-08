@@ -26,7 +26,7 @@ export default function Heritage() {
             }
         },
         "datePublished": "2025-04-07",
-        "dateModified": "2025-04-07" 
+        "dateModified": "2025-04-07"
     };
 
     return (
@@ -43,18 +43,28 @@ export default function Heritage() {
                 url={undefined}
                 image={undefined}
             />
-            <section id="heritage" className="py-16 px-6 bg-gray-100">
-                <div className="max-w-4xl mx-auto space-y-6">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-center sm:text-left">{t.title}</h2>
-                    <p className="text-base md:text-lg text-gray-700 whitespace-pre-line text-center sm:text-left">{t.text}</p>
-                    <div className="mt-8">
-                        <Image
-                            src="/section3.jpg"
-                            alt={t.title}
-                            className="rounded-lg shadow-md w-full h-auto object-cover"
-                            width={1200}
-                            height={600}
-                        />
+
+            <section id="heritage" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-100">
+                <div className="max-w-5xl mx-auto space-y-8">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center sm:text-left text-gray-900">
+                        {t.title}
+                    </h2>
+
+                    <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed text-center sm:text-left whitespace-pre-line">
+                        {t.text}
+                    </p>
+
+                    <div className="mt-6">
+                        <div className="relative w-full max-w-5xl aspect-[16/9] mx-auto">
+                            <Image
+                                src="/section3.jpg"
+                                alt={t.title}
+                                fill
+                                priority
+                                className="rounded-lg shadow-md object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 75vw, 50vw"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>

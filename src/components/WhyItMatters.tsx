@@ -36,23 +36,27 @@ export default function WhyItMatters() {
             />
             <section
                 id="why"
-                className="py-16 px-4 sm:px-6 lg:px-8 bg-white transition-opacity duration-1000"
+                className="py-16 px-4 sm:px-6 lg:px-8 bg-white"
             >
-                <div className="max-w-7xl mx-auto space-y-6">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-center">
+                <div className="max-w-6xl mx-auto space-y-8">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900">
                         {t.title}
                     </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-700 whitespace-pre-line text-center">
+                    <p className="text-sm sm:text-base md:text-lg text-gray-700 text-center whitespace-pre-line leading-relaxed">
                         {t.text}
                     </p>
+
                     <div className="mt-8 flex justify-center">
-                        <Image
-                            src="/section2.jpg"
-                            alt={t.title}
-                            className="rounded-lg shadow-md w-full max-w-3xl h-auto object-cover"
-                            width={1200}
-                            height={590}
-                        />
+                        <div className="relative w-full max-w-4xl aspect-[16/9]">
+                            <Image
+                                src="/section2.jpg"
+                                alt={t.title}
+                                fill
+                                priority
+                                className="rounded-lg shadow-md object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 75vw, 50vw"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>

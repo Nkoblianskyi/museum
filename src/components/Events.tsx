@@ -26,11 +26,12 @@ export default function Events() {
         const interval = setInterval(() => {
             instanceRef.current?.next();
         }, 5000);
+
         return () => clearInterval(interval);
     }, [instanceRef]);
 
     return (
-        <section id="events" className="py-16 px-4 sm:px-6 md:px-10 bg-white">
+        <section id="events" className="py-16 px-4 sm:px-6 md:px-10 bg-white overflow-x-hidden">
             <div className="max-w-5xl mx-auto text-center">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-gray-800">
                     {t.title}
@@ -42,13 +43,14 @@ export default function Events() {
                             key={idx}
                             className="keen-slider__slide flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm"
                         >
-                            <div className="relative w-full aspect-[16/9] max-h-[400px] mb-4 overflow-hidden rounded-lg">
+                            <div className="relative w-full aspect-[16/9] mb-4 overflow-hidden rounded-lg">
                                 <Image
                                     src={image}
                                     alt={title}
                                     fill
                                     className="object-cover"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 75vw, 50vw"
+                                    priority={idx === 0}
                                 />
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
@@ -59,15 +61,16 @@ export default function Events() {
                 </div>
 
                 {/* Пагінація */}
-                <div className="mt-6 flex justify-center gap-2 sm:gap-3">
+                <div className="mt-6 flex justify-center gap-3">
                     {t.list.map((_, idx) => (
                         <button
                             key={idx}
                             onClick={() => instanceRef.current?.moveToIdx(idx)}
                             aria-label={`Перейти до слайду ${idx + 1}`}
-                            className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full transition-all duration-300 border-2 ${currentSlide === idx
+                            aria-pressed={currentSlide === idx}
+                            className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 border-2 ${currentSlide === idx
                                     ? 'bg-black border-black scale-110'
-                                    : 'bg-white border-gray-300'
+                                    : 'bg-white border-gray-400'
                                 }`}
                         />
                     ))}
