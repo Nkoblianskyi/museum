@@ -11,7 +11,7 @@ export default function Footer() {
             <div className="max-w-6xl mx-auto flex flex-col gap-8 text-sm sm:text-base">
 
                 {/* Верхній рядок: контакти + навігація */}
-                <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-10 md:gap-x-20">
+                <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-8">
 
                     {/* Контакти */}
                     <address
