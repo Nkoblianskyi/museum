@@ -30,7 +30,7 @@ export default function Footer() {
 
                     {/* Навігація */}
                     <nav
-                        className="flex flex-col items-center md:items-start space-y-2 text-sm sm:text-base md:text-[15px]"
+                        className="flex flex-col items-center md:items-center space-y-2 text-sm sm:text-base md:text-[15px]"
                         aria-label="Footer Navigation"
                     >
                         <Link href="/kontakt">
