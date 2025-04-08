@@ -49,10 +49,9 @@ export default function Hero() {
                 itemScope
                 itemType="http://schema.org/CreativeWork"
             >
-                {/* Overlay */}
+
                 <div className="absolute inset-0 bg-black/60"></div>
 
-                {/* Content */}
                 <div className="relative z-10 text-center text-white space-y-6 max-w-4xl">
                     <h1
                         className="text-2xl sm:text-3xl md:text-2xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow"

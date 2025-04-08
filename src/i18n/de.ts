@@ -182,8 +182,8 @@ const de = {
     impressum: "Impressum",
     schreiben: "Schreiben Sie Uns",
     address: "Museumsstraße 12, 10115 Berlin",
-    phone: "+49 30 1234567",
-    email: "info@museendeutschlands.de",
+    phone: "+49 30 1758749",
+    email: "info@museendeutschlands.com",
   },
 };
 

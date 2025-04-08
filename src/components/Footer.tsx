@@ -10,10 +10,9 @@ export default function Footer() {
         <footer className="bg-gray-900 text-white pt-10 pb-6 px-4 sm:px-6 lg:px-8 mt-12">
             <div className="max-w-6xl mx-auto flex flex-col gap-8 text-sm sm:text-base">
 
-                {/* Верхній рядок: контакти + навігація */}
+
                 <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-8">
 
-                    {/* Контакти */}
                     <address
                         className="not-italic text-center md:text-left space-y-1 text-sm sm:text-base md:text-[15px] leading-relaxed max-w-md"
                         aria-label="Kontaktinformationen"
@@ -28,7 +27,6 @@ export default function Footer() {
                         </p>
                     </address>
 
-                    {/* Навігація */}
                     <nav
                         className="flex flex-col items-center md:items-center space-y-2 text-sm sm:text-base md:text-[15px]"
                         aria-label="Footer Navigation"
@@ -44,7 +42,6 @@ export default function Footer() {
                     </nav>
                 </div>
 
-                {/* Нижній рядок: копірайт */}
                 <div className="border-t border-gray-800 pt-4 text-center text-xs sm:text-sm text-gray-400 leading-snug">
                     <p>© {new Date().getFullYear()} Museen Deutschlands</p>
                     <p>Alle Rechte vorbehalten</p>

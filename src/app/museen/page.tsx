@@ -37,7 +37,7 @@ export default function Museen() {
             }}
         >
             <div className="max-w-5xl mx-auto bg-white p-6 sm:p-10 md:p-12 rounded-xl shadow-md">
-                {/* Заголовок */}
+
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center text-gray-900">
                     Museen in Deutschland: Vielfalt, die inspiriert
                 </h2>
@@ -54,7 +54,6 @@ export default function Museen() {
                     Museen in Deutschland sind nicht einfach nur Gebäude mit Exponaten. Sie vereinen einzigartige Architektur, reiche Sammlungen und innovative Präsentationskonzepte. Hier finden Sie alles, von majestätischen Sälen mit Gemälden alter Meister bis hin zu interaktiven Räumen, in denen Sie Wissenschaft zum Anfassen erleben oder sich sogar wie ein Pilot oder Rennfahrer fühlen können. Jedes Museum ist eine Reise, die neue Facetten von Kultur, Geschichte und menschlichen Errungenschaften offenbart.
                 </p>
 
-                {/* Блок 1 карточка */}
                 <div className="flex justify-center mb-8">
                     <div className="w-full md:w-2/3 bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
                         <h3 className="text-lg sm:text-xl font-semibold mb-2">{museumCards[0].name}</h3>
@@ -68,7 +67,6 @@ export default function Museen() {
                     </div>
                 </div>
 
-                {/* Блок 2 карточки */}
                 <div className="flex flex-col md:flex-row md:justify-between gap-6 mb-8">
                     {museumCards.slice(1, 3).map((museum) => (
                         <div
@@ -87,7 +85,6 @@ export default function Museen() {
                     ))}
                 </div>
 
-                {/* Блок 1 карточка */}
                 <div className="flex justify-center mb-10">
                     <div className="w-full md:w-2/3 bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
                         <h3 className="text-lg sm:text-xl font-semibold mb-2">{museumCards[3].name}</h3>
@@ -101,7 +98,7 @@ export default function Museen() {
                     </div>
                 </div>
 
-                {/* Кнопка знизу */}
+
                 <div className="text-center md:text-right">
                     <button
                         onClick={() => router.push('/kontakt')}
