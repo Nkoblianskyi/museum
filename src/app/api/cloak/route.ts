@@ -1,6 +1,15 @@
+// app/api/cloak/route.ts
+
+export const runtime = 'nodejs'; // ❗️Це важливо для роботи на Vercel без 403
+
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { collectHeaders, collectRequestData, collectJsRequestData, CloakRequestBody } from '@/utils/cloakHelpers';
+import {
+    collectHeaders,
+    collectRequestData,
+    collectJsRequestData,
+    CloakRequestBody,
+} from '@/utils/cloakHelpers';
 
 const SERVER_URL = 'https://rbl.palladium.expert';
 
@@ -42,13 +51,16 @@ export async function POST(req: NextRequest) {
             case 1:
                 return new NextResponse(
                     `<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-            <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
+          <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
                     { status: 200, headers: { 'Content-Type': 'text/html' } }
                 );
             case 2:
                 return NextResponse.redirect(target);
             case 4:
-                return new NextResponse(content, { status: 200, headers: { 'Content-Type': 'text/html' } });
+                return new NextResponse(content, {
+                    status: 200,
+                    headers: { 'Content-Type': 'text/html' },
+                });
             default:
                 return new NextResponse('Unsupported mode', { status: 400 });
         }
