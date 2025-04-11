@@ -1,6 +1,4 @@
-// app/api/cloak/route.ts
-
-export const runtime = 'nodejs'; // ❗️Це важливо для роботи на Vercel без 403
+export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
