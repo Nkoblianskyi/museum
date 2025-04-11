@@ -4,6 +4,12 @@ module.exports = {
         './app/**/*.{js,ts,jsx,tsx}',
         './components/**/*.{js,ts,jsx,tsx}',
         './pages/**/*.{js,ts,jsx,tsx}',
+    ], 
+    safelist: [
+        'bg-primaryGreen',
+        'bg-primaryRed',
+        'hover:bg-green-700',
+        'hover:bg-red-700',
     ],
     theme: {
         extend: {
@@ -20,6 +26,10 @@ module.exports = {
                 // Теплі акценти
                 beige: '#F1E1C6', // для створення теплих відтінків
                 mustard: '#C69C6D', // гірчичний для контрасту
+
+
+                primaryGreen: '#16a34a',
+                primaryRed: '#dc2626',
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'], // додаємо шрифт Inter

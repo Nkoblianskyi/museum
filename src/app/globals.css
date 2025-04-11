@@ -41,6 +41,11 @@ button {
   transition: all 0.3s ease;
 }
 
+button.base-btn {
+  background-color: #3b332e;
+  color: white;
+}
+
 button:hover {
   background-color: #53321f;
 }
