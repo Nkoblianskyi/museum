@@ -9,7 +9,7 @@ import {
     CloakRequestBody,
 } from '@/utils/cloakHelpers';
 
-const SERVER_URL = 'https://api.palladium.expert/v1/postback';
+const SERVER_URL = 'https://rbl.palladium.expert';
 
 export async function POST(req: NextRequest) {
     try {
