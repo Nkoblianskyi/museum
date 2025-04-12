@@ -1,4 +1,4 @@
-export const runtime = 'nodejs';
+// app/api/cloak/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
 
         const body: CloakRequestBody = await req.json();
 
+        // Підготовка payload для запиту
         const payload = {
             request: collectRequestData(body),
             jsrequest: collectJsRequestData(body),
@@ -28,13 +29,13 @@ export async function POST(req: NextRequest) {
             auth: {
                 clientId: 3024,
                 clientCompany: 'NYWW5iCjpYIGyDaN13z2',
-                clientSecret:
-                    'MzAyNE5ZV1c1aUNqcFlJR3lEYU4xM3oyY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
+                clientSecret: 'MzAyNE5ZV1c1aUNqcFlJR3lEYU4xM3oyY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
             },
         };
 
         payload.server.bannerSource = 'adwords';
 
+        // Запит до Palladium API
         const response = await axios.post(
             SERVER_URL,
             new URLSearchParams(flatten(payload)),
