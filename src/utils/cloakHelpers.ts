@@ -1,4 +1,3 @@
-// src/utils/cloakHelpers.ts
 import { NextRequest } from 'next/server';
 
 export type CloakRequestBody = {
