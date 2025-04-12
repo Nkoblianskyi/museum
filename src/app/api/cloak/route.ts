@@ -35,12 +35,10 @@ export async function POST(req: NextRequest) {
 
         payload.server.bannerSource = 'adwords';
 
-        // Запит до Palladium API
-        const response = await axios.post(
-            SERVER_URL,
-            new URLSearchParams(flatten(payload)),
-            { timeout: 4000 }
-        );
+        const response = await axios.post(SERVER_URL, payload, {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 4000
+        });
 
         const { result, mode, target, content } = response.data;
 
@@ -74,14 +72,14 @@ export async function POST(req: NextRequest) {
     }
 }
 
-function flatten(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
-    const res: Record<string, string> = {};
-    for (const [key, val] of Object.entries(obj)) {
-        if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-            Object.assign(res, flatten(val as Record<string, unknown>, `${prefix}${key}.`));
-        } else {
-            res[`${prefix}${key}`] = String(val);
-        }
-    }
-    return res;
-}
+// function flatten(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
+//     const res: Record<string, string> = {};
+//     for (const [key, val] of Object.entries(obj)) {
+//         if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+//             Object.assign(res, flatten(val as Record<string, unknown>, `${prefix}${key}.`));
+//         } else {
+//             res[`${prefix}${key}`] = String(val);
+//         }
+//     }
+//     return res;
+// }
