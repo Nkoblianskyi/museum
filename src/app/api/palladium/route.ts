@@ -12,20 +12,32 @@ async function handleRequest(req: NextRequest) {
     const rawBody = await req.text();
     const parsedBody = Object.fromEntries(new URLSearchParams(rawBody));
 
-    const serverHeaders = {
+    // Готуємо серверні заголовки
+    const server = {
         REMOTE_ADDR: req.headers.get('x-forwarded-for') || '0.0.0.0',
         SERVER_PROTOCOL: 'HTTP/1.1',
         REQUEST_URI: req.url,
-        HTTP_USER_AGENT: req.headers.get('user-agent'),
-        HTTP_ACCEPT: req.headers.get('accept'),
+        HTTP_USER_AGENT: req.headers.get('user-agent') || '',
+        HTTP_ACCEPT: req.headers.get('accept') || '',
         HTTP_HOST: req.headers.get('host') || '',
+        REQUEST_TIME_FLOAT: (Date.now() / 1000).toString(),
+        SERVER_PORT: '443', // ← додано
         bannerSource: 'adwords',
     };
 
+
     const body = new URLSearchParams();
+
+    // Формуємо server[*]
+    Object.entries(server).forEach(([key, value]) => {
+        body.append(`server[${key}]`, value);
+    });
+
+    // request і jsrequest — з тіла запиту
     body.append('request', JSON.stringify(parsedBody?.data || {}));
     body.append('jsrequest', JSON.stringify(parsedBody?.jsdata || {}));
-    body.append('server', JSON.stringify(serverHeaders));
+
+    // auth
     body.append('auth[clientId]', '3024');
     body.append('auth[clientCompany]', 'CQ21WW9U3ehzwXZOKITe');
     body.append(
