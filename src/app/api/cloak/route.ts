@@ -1,27 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
+// Секретні ключі для Palladium
 const CLIENT_ID = '3024';
 const CLIENT_COMPANY = 'CQ21WW9U3ehzwXZOKITe';
 const CLIENT_SECRET = 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==';
 const SERVER_URL = 'https://rbl.palladium.expert';
 
+// Основний метод POST для обробки запитів
 export async function POST(req: NextRequest) {
     try {
-        const url = new URL(req.url);
-        const isDrJsess = url.searchParams.get('dr_jsess') === '1';
-        if (isDrJsess) {
-            return new NextResponse('OK', { status: 200 });
-        }
-
-        const body = await req.json();
+        const body = await req.json();  // Отримуємо дані з запиту
 
         const payload = {
             request: body.request || {},
             jsrequest: body.jsrequest || {},
             server: {
                 ...body.server,
-                bannerSource: 'adwords',
+                bannerSource: 'adwords',  // Вказуємо джерело банера
             },
             auth: {
                 clientId: CLIENT_ID,
@@ -30,16 +26,21 @@ export async function POST(req: NextRequest) {
             },
         };
 
-        console.log("Payload to Palladium:", JSON.stringify(payload, null, 2));
+        // Логування для перевірки, що передається в запит
+        console.log('Payload to Palladium:', JSON.stringify(payload, null, 2));
 
+        // Запит до API Palladium
         const response = await axios.post(SERVER_URL, payload, { timeout: 4000 });
 
-        console.log("Response from Palladium:", response.data);
+        // Логування відповіді від сервера Palladium
+        console.log('Response from Palladium:', response.data);
 
         const { result, mode, target, content } = response.data;
 
+        // Якщо результат false, повертаємо помилку
         if (!result) return new NextResponse('Access denied', { status: 403 });
 
+        // Обробка різних режимів відповіді
         switch (mode) {
             case 1:
                 return new NextResponse(
