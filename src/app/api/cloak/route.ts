@@ -7,7 +7,6 @@ const CLIENT_COMPANY = 'CQ21WW9U3ehzwXZOKITe';
 const CLIENT_SECRET = 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==';
 const SERVER_URL = 'https://rbl.palladium.expert';
 
-// Основний метод POST для обробки запитів
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();  // Отримуємо дані з запиту

@@ -1,6 +1,4 @@
-'use client';
 
-import { CloakClient } from '@/components/CloakClient';
 import Hero from '../components/Hero';
 import WhyItMatters from '../components/WhyItMatters';
 import Heritage from '../components/Heritage';
@@ -8,6 +6,7 @@ import Facts from '../components/Facts';
 import Diversity from '../components/Diversity';
 import Events from '../components/Events';
 import CTA from '../components/CTA';
+import { CloakClient } from '@/components/CloakClient';
 
 export default function Home() {
   return (
