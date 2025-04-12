@@ -68,7 +68,7 @@ async function handleRequest(req: NextRequest) {
             }
 
             if (mode === 3) {
-                // нічого не робимо — залишаємося на сайті
+
                 return new Response('', { status: 200 });
             }
 

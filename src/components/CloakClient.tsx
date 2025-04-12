@@ -17,7 +17,6 @@ export default function PalladiumLoader() {
                     });
                 }
 
-                // якщо JSON або порожній результат — нічого не робимо
                 return;
             });
     }, []);
