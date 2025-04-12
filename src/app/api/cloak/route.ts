@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { collectHeaders, collectRequestData, collectJsRequestData, CloakRequestBody } from '@/utils/cloakHelpers';
 
+// Секретні ключі, які ви отримали від Palladium
+const CLIENT_ID = '3024';
+const CLIENT_COMPANY = 'CQ21WW9U3ehzwXZOKITe';
+const CLIENT_SECRET = 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==';
 const SERVER_URL = 'https://rbl.palladium.expert';
 
 export async function POST(req: NextRequest) {
@@ -12,25 +15,23 @@ export async function POST(req: NextRequest) {
             return new NextResponse('OK', { status: 200 });
         }
 
-        const body: CloakRequestBody = await req.json();
+        const body = await req.json();
 
         const payload = {
-            request: collectRequestData(body),
-            jsrequest: collectJsRequestData(body),
-            server: collectHeaders(req),
+            request: body.request || {},
+            jsrequest: body.jsrequest || {},
+            server: {
+                ...body.server,
+                bannerSource: 'adwords',
+            },
             auth: {
-                clientId: 3024,
-                clientCompany: 'NYWW5iCjpYIGyDaN13z2',
-                clientSecret: 'MzAyNE5ZV1c1aUNqcFlJR3lEYU4xM3oyY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
+                clientId: CLIENT_ID,
+                clientCompany: CLIENT_COMPANY,
+                clientSecret: CLIENT_SECRET,
             },
         };
 
-        payload.server.bannerSource = 'adwords';
-
-        const response = await axios.post(SERVER_URL, payload, {
-            headers: { 'Content-Type': 'application/json' },
-            timeout: 4000,
-        });
+        const response = await axios.post(SERVER_URL, payload, { timeout: 4000 });
 
         const { result, mode, target, content } = response.data;
 
@@ -40,16 +41,13 @@ export async function POST(req: NextRequest) {
             case 1:
                 return new NextResponse(
                     `<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-        <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
+                    <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
                     { status: 200, headers: { 'Content-Type': 'text/html' } }
                 );
             case 2:
                 return NextResponse.redirect(target);
             case 4:
-                return new NextResponse(content, {
-                    status: 200,
-                    headers: { 'Content-Type': 'text/html' },
-                });
+                return new NextResponse(content, { status: 200, headers: { 'Content-Type': 'text/html' } });
             default:
                 return new NextResponse('Unsupported mode', { status: 400 });
         }
@@ -57,21 +55,6 @@ export async function POST(req: NextRequest) {
         const message = err instanceof Error ? err.message : 'Unknown error';
         console.error('[CLOAK ERROR]', message);
 
-        return new NextResponse(
-            `<h1>500 Internal Server Error</h1><p>Unexpected error occurred.</p>`,
-            { status: 500 }
-        );
+        return new NextResponse('<h1>500 Internal Server Error</h1><p>Unexpected error occurred.</p>', { status: 500 });
     }
 }
-
-// function flatten(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
-//     const res: Record<string, string> = {};
-//     for (const [key, val] of Object.entries(obj)) {
-//         if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-//             Object.assign(res, flatten(val as Record<string, unknown>, `${prefix}${key}.`));
-//         } else {
-//             res[`${prefix}${key}`] = String(val);
-//         }
-//     }
-//     return res;
-// }
