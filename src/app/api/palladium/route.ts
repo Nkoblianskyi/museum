@@ -1,11 +1,11 @@
 // app/api/palladium/route.ts
 
-import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import path from 'path';
+import { NextRequest, NextResponse } from "next/server";
+import { readFileSync } from "fs";
+import path from "path";
 
-// === Налаштування Palladium ===
-const SERVER_URL = 'https://rbl.palladium.expert';
+// === Налаштування Palladium (замініть на свої дані) ===
+const SERVER_URL = "https://rbl.palladium.expert";
 const AUTH = {
     clientId: 3024,
     clientCompany: "CQ21WW9U3ehzwXZOKITe",
@@ -13,34 +13,36 @@ const AUTH = {
         "MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==",
 };
 
-// --- Допоміжна функція для побудови запитного рядка (аналог http_build_query) ---
-// Використовуємо тип Record<string, unknown> замість any
-function buildQuery(obj: Record<string, unknown>, prefix: string = ""): string {
-    const str: string[] = [];
+// --- Допоміжна функція для побудови query string (аналог http_build_query) ---
+function buildQuery(
+    obj: Record<string, unknown>,
+    prefix: string = ""
+): string {
+    const parts: string[] = [];
     for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
             const k = prefix
                 ? `${prefix}[${encodeURIComponent(key)}]`
                 : encodeURIComponent(key);
-            const v = obj[key];
-            if (v !== null && typeof v === "object") {
-                // Примітивно приводимо до Record<string, unknown>
-                str.push(buildQuery(v as Record<string, unknown>, k));
+            const value = obj[key];
+            if (value !== null && typeof value === "object") {
+                parts.push(buildQuery(value as Record<string, unknown>, k));
             } else {
-                str.push(`${k}=${encodeURIComponent(String(v))}`);
+                parts.push(`${k}=${encodeURIComponent(String(value))}`);
             }
         }
     }
-    return str.join("&");
+    return parts.join("&");
 }
 
-// --- Функція для формування абсолютного шляху, як sanitizePath у PHP ---
+// --- Формування абсолютного шляху для локальних файлів (аналог sanitizePath) ---
 function sanitizePath(p: string): string {
+    // Використовуємо корінь проекту як базову директорію
     const baseDir = process.cwd();
     return p[0] !== "/" ? path.join(baseDir, p) : path.join(baseDir, p);
 }
 
-// --- Функція, що перевіряє, чи є шлях локальним файлом ---
+// --- Перевірка чи шлях є локальним файлом (аналог isLocal) ---
 function isLocalFile(filePath: string): boolean {
     return !/^https?:\/\//i.test(filePath);
 }
@@ -65,7 +67,6 @@ function collectHeaders(req: NextRequest): Record<string, string> {
         "X-Frame-Options",
     ];
     const headers: Record<string, string> = {};
-
     req.headers.forEach((value, key) => {
         if (
             headerNames.includes(key.toUpperCase()) ||
@@ -81,26 +82,25 @@ function collectHeaders(req: NextRequest): Record<string, string> {
     headers["REQUEST_SCHEME"] = url.protocol.replace(":", "");
     headers["SERVER_PROTOCOL"] = "HTTP/1.1";
     headers["SERVER_PORT"] = url.port || (url.protocol === "https:" ? "443" : "80");
-
     return headers;
 }
 
-// --- Збір request даних (аналог collectRequestData) ---
+// --- Збір даних з тіла запиту (аналог collectRequestData) ---
 async function collectRequestData(
     req: NextRequest
 ): Promise<Record<string, unknown>> {
-    let data: Record<string, unknown> = {};
+    const data: Record<string, unknown> = {};
     const contentType = req.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
         const body = await req.json();
         if (body.data) {
             try {
-                data = JSON.parse(body.data);
+                Object.assign(data, JSON.parse(body.data));
             } catch {
                 try {
-                    data = JSON.parse(body.data.replace(/\\/g, ""));
+                    Object.assign(data, JSON.parse(body.data.replace(/\\/g, "")));
                 } catch {
-                    data = {};
+                    /* залишається порожнім */
                 }
             }
         }
@@ -113,12 +113,12 @@ async function collectRequestData(
         if (params.has("data")) {
             const d = params.get("data")!;
             try {
-                data = JSON.parse(d);
+                Object.assign(data, JSON.parse(d));
             } catch {
                 try {
-                    data = JSON.parse(d.replace(/\\/g, ""));
+                    Object.assign(data, JSON.parse(d.replace(/\\/g, "")));
                 } catch {
-                    data = {};
+                    /* залишається порожнім */
                 }
             }
         }
@@ -129,22 +129,22 @@ async function collectRequestData(
     return data;
 }
 
-// --- Збір js запит даних (аналог collectJsRequestData) ---
+// --- Збір JS даних (аналог collectJsRequestData) ---
 async function collectJsRequestData(
     req: NextRequest
 ): Promise<Record<string, unknown>> {
-    let jsdata: Record<string, unknown> = {};
+    const jsdata: Record<string, unknown> = {};
     const contentType = req.headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
         const body = await req.json();
         if (body.jsdata) {
             try {
-                jsdata = JSON.parse(body.jsdata);
+                Object.assign(jsdata, JSON.parse(body.jsdata));
             } catch {
                 try {
-                    jsdata = JSON.parse(body.jsdata.replace(/\\/g, ""));
+                    Object.assign(jsdata, JSON.parse(body.jsdata.replace(/\\/g, "")));
                 } catch {
-                    jsdata = {};
+                    /* залишаємо порожнім */
                 }
             }
         }
@@ -154,12 +154,12 @@ async function collectJsRequestData(
         if (params.has("jsdata")) {
             const d = params.get("jsdata")!;
             try {
-                jsdata = JSON.parse(d);
+                Object.assign(jsdata, JSON.parse(d));
             } catch {
                 try {
-                    jsdata = JSON.parse(d.replace(/\\/g, ""));
+                    Object.assign(jsdata, JSON.parse(d.replace(/\\/g, "")));
                 } catch {
-                    jsdata = {};
+                    /* залишаємо порожнім */
                 }
             }
         }
@@ -177,6 +177,7 @@ interface PalladiumReply {
 // --- Головна функція API ---
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
+        // Якщо параметр dr_jsess=1, одразу повертаємо 200 OK (тестовий запит)
         const url = new URL(req.url);
         if (url.searchParams.get("dr_jsess") === "1") {
             return new NextResponse(null, { status: 200 });
@@ -186,6 +187,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const requestData = await collectRequestData(req);
         const jsRequestData = await collectJsRequestData(req);
 
+        // Формування payload
         const payload = {
             request: requestData,
             jsrequest: jsRequestData,
@@ -195,6 +197,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const formBody = buildQuery(payload);
 
+        // Встановлюємо таймаут для запиту до сервісу
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 4000);
 
@@ -229,24 +232,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const target = reply.target;
         const content = reply.content;
 
+        // Якщо target є URL, а режим 3 – переключаємо на mode 2 (редирект)
         if (typeof target === "string" && /^https?:/i.test(target) && mode === 3) {
             mode = 2;
         }
 
         if (resultFlag && mode === 1) {
+            // Mode 1: повертаємо HTML з iframe
             const safeTarget = target ? target.replace(/"/g, "&quot;") : "";
             const html = `<html>
-                            <head>
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            </head>
-                            <body>
-                            <iframe src="${safeTarget}" style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:999999; border:none;"></iframe>
-                            </body>
-                        </html>`;
-            return new NextResponse(html, { headers: { "Content-Type": "text/html" } });
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body>
+          <iframe src="${safeTarget}" style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:999999; border:none;"></iframe>
+        </body>
+      </html>`;
+            return new NextResponse(html, {
+                headers: { "Content-Type": "text/html" },
+            });
         } else if (resultFlag && mode === 2) {
+            // Mode 2: редирект
             return NextResponse.redirect(target as string);
         } else if (resultFlag && mode === 3) {
+            // Mode 3: завантаження локального файлу
             if (typeof target !== "string") {
                 return new NextResponse("Invalid target for mode 3", { status: 500 });
             }
@@ -258,14 +267,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                     headers: { "Content-Type": "text/html" },
                 });
             } catch (err: unknown) {
-                const message = err instanceof Error ? err.message : String(err);
+                const message =
+                    err instanceof Error ? err.message : String(err);
                 return new NextResponse(`File error: ${message}`, { status: 500 });
             }
         } else if (resultFlag && mode === 4) {
+            // Mode 4: повертаємо HTML контент, який повернув сервіс
             return new NextResponse(content || "", {
                 headers: { "Content-Type": "text/html" },
             });
         } else {
+            // Фолбек: спроба завантажити локальний файл
             if (target && isLocalFile(String(target))) {
                 const filePath = sanitizePath(String(target));
                 try {
@@ -281,8 +293,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        return new NextResponse(`500 Internal Server Error: ${message}`, {
-            status: 500,
-        });
+        return new NextResponse(`500 Internal Server Error: ${message}`, { status: 500 });
     }
 }

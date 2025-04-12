@@ -1,3 +1,5 @@
+// components/CloakClient.tsx
+
 "use client";
 
 import { useEffect } from "react";
@@ -14,8 +16,7 @@ export default function CloakClient() {
             }),
         })
             .then(async (res) => {
-                // Зчитуємо тіло відповіді один раз
-                const responseText = await res.text();
+                const responseText = await res.text(); // зчитуємо відповідь один раз
                 if (!res.ok) {
                     console.error("Server returned error:", responseText);
                     throw new Error(responseText);
@@ -24,6 +25,7 @@ export default function CloakClient() {
             })
             .then((html) => {
                 if (html) {
+                    // Відображаємо отриманий HTML-код
                     document.open();
                     document.write(html);
                     document.close();
