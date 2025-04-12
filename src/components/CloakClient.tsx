@@ -1,38 +1,15 @@
-// components/CloakClient.tsx
+'use client';
 
-"use client";
+import { useEffect } from 'react';
 
-import { useEffect } from "react";
-
-export default function CloakClient() {
+export default function PalladiumLoader() {
     useEffect(() => {
-        fetch("/api/palladium", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                data: JSON.stringify({ /* мінімальні дані для тесту */ }),
-                jsdata: JSON.stringify({ /* мінімальні дані для тесту */ }),
-                crossref_sessionid: ""
-            }),
-        })
-            .then(async (res) => {
-                const responseText = await res.text(); // зчитуємо відповідь один раз
-                if (!res.ok) {
-                    console.error("Server returned error:", responseText);
-                    throw new Error(responseText);
-                }
-                return responseText;
-            })
+        fetch('/api/palladium')
+            .then((res) => res.text())
             .then((html) => {
-                if (html) {
-                    // Відображаємо отриманий HTML-код
-                    document.open();
-                    document.write(html);
-                    document.close();
-                }
-            })
-            .catch((error) => {
-                console.error("[CloakClient Error]:", error);
+                document.open();
+                document.write(html);
+                document.close();
             });
     }, []);
 
