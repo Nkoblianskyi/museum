@@ -1,4 +1,3 @@
-// app/api/cloak/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
@@ -21,21 +20,19 @@ export async function POST(req: NextRequest) {
 
         const body: CloakRequestBody = await req.json();
 
-        // Підготовка payload для запиту
         const payload = {
             request: collectRequestData(body),
             jsrequest: collectJsRequestData(body),
             server: collectHeaders(req),
             auth: {
                 clientId: 3024,
-                clientCompany: 'NYWW5iCjpYIGyDaN13z2',
-                clientSecret: 'MzAyNE5ZV1c1aUNqcFlJR3lEYU4xM3oyY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
+                clientCompany: 'CQ21WW9U3ehzwXZOKITe',
+                clientSecret: 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
             },
         };
 
         payload.server.bannerSource = 'adwords';
 
-        // Запит до Palladium API
         const response = await axios.post(
             SERVER_URL,
             new URLSearchParams(flatten(payload)),
@@ -50,7 +47,7 @@ export async function POST(req: NextRequest) {
             case 1:
                 return new NextResponse(
                     `<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-          <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
+                    <body><iframe src="${target}" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:999999;border:none;"></iframe></body></html>`,
                     { status: 200, headers: { 'Content-Type': 'text/html' } }
                 );
             case 2:
