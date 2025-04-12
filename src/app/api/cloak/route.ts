@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-// Секретні ключі, які ви отримали від Palladium
 const CLIENT_ID = '3024';
 const CLIENT_COMPANY = 'CQ21WW9U3ehzwXZOKITe';
 const CLIENT_SECRET = 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==';
@@ -31,11 +30,11 @@ export async function POST(req: NextRequest) {
             },
         };
 
-        console.log("Payload to Palladium:", JSON.stringify(payload, null, 2));  // Логування payload
+        console.log("Payload to Palladium:", JSON.stringify(payload, null, 2));
 
         const response = await axios.post(SERVER_URL, payload, { timeout: 4000 });
 
-        console.log("Response from Palladium:", response.data);  // Логування відповіді від Palladium
+        console.log("Response from Palladium:", response.data);
 
         const { result, mode, target, content } = response.data;
 
@@ -57,7 +56,7 @@ export async function POST(req: NextRequest) {
         }
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Unknown error';
-        console.error('[CLOAK ERROR]', message);  // Логування помилок
+        console.error('[CLOAK ERROR]', message);
 
         return new NextResponse('<h1>500 Internal Server Error</h1><p>Unexpected error occurred.</p>', { status: 500 });
     }
