@@ -1,44 +1,38 @@
-// components/CloakClient.tsx
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export const CloakClient = () => {
+export default function CloakClient() {
     useEffect(() => {
-        // Викликаємо API маршрут до /api/cloak для обробки запиту
-        fetch('/api/cloak', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        fetch("/api/palladium", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                request: {},
-                jsrequest: {},
-                server: {
-                    // Тут можуть бути дані сервера для налаштування запиту
-                }
-            })
+                data: JSON.stringify({ /* мінімальні дані для тесту */ }),
+                jsdata: JSON.stringify({ /* мінімальні дані для тесту */ }),
+                crossref_sessionid: ""
+            }),
         })
-            .then((res) => {
-                if (res.redirected) {
-                    // Якщо редирект, змінюємо URL
-                    window.location.href = res.url;
-                } else {
-                    return res.text(); // Отримуємо текстову відповідь
+            .then(async (res) => {
+                // Зчитуємо тіло відповіді один раз
+                const responseText = await res.text();
+                if (!res.ok) {
+                    console.error("Server returned error:", responseText);
+                    throw new Error(responseText);
                 }
+                return responseText;
             })
             .then((html) => {
                 if (html) {
-                    // Перевіряємо на наявність iframe чи HTML
-                    if (html.includes('<iframe') || html.includes('<!DOCTYPE html')) {
-                        document.open();
-                        document.write(html);
-                        document.close();
-                    }
+                    document.open();
+                    document.write(html);
+                    document.close();
                 }
             })
             .catch((error) => {
-                console.error('[CLOAK ERROR]', error);
+                console.error("[CloakClient Error]:", error);
             });
     }, []);
 
-    return null;  // Цей компонент не рендерить жодного UI, він лише викликає API
-};
+    return null;
+}

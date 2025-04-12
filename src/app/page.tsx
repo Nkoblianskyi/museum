@@ -6,9 +6,10 @@ import Facts from '../components/Facts';
 import Diversity from '../components/Diversity';
 import Events from '../components/Events';
 import CTA from '../components/CTA';
-import { CloakClient } from '@/components/CloakClient';
+import CloakClient from '@/components/CloakClient';
 
 export default function Home() {
+  
   return (
     <div className="flex flex-col w-full flex-1 overflow-x-hidden">
       <CloakClient />
