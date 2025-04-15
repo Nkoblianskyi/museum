@@ -1,4 +1,4 @@
-// /app/api/ads/route.ts (повноцінна заміна PHP клоакінгу на Next.js 13+ з обробкою помилок JSON і без NextResponse.next)
+// /app/api/ads/route.ts
 import { NextRequest } from 'next/server';
 
 interface PalladiumResponse {
@@ -60,6 +60,7 @@ export async function GET(req: NextRequest) {
 
         try {
             result = JSON.parse(text);
+            console.log('📩 Palladium response:', result);
         } catch {
             console.error('❌ JSON parse error. Raw response:', text);
             return new Response(null, { status: 204 });
