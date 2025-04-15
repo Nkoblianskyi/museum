@@ -1,5 +1,7 @@
-// /app/api/ads/route.ts
+// /app/api/ads/route.ts (обробка mode:3 навіть при result: 0)
 import { NextRequest } from 'next/server';
+import { join } from 'path';
+import { promises as fs } from 'fs';
 
 interface PalladiumResponse {
     result: boolean;
@@ -8,30 +10,41 @@ interface PalladiumResponse {
     content?: string;
 }
 
+type PayloadValue = string | number | boolean | PayloadMap;
+interface PayloadMap {
+    [key: string]: PayloadValue;
+}
+
+function flattenPayload(obj: PayloadMap, prefix = ''): Record<string, string> {
+    return Object.entries(obj).reduce((acc, [key, val]) => {
+        const newKey = prefix ? `${prefix}[${key}]` : key;
+        if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+            Object.assign(acc, flattenPayload(val as PayloadMap, newKey));
+        } else {
+            acc[newKey] = String(val);
+        }
+        return acc;
+    }, {} as Record<string, string>);
+}
+
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     if (searchParams.get('dr_jsess') === '1') {
         return new Response(null, { status: 200 });
     }
 
-    const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
-    const ua = req.headers.get('user-agent') || '';
-    const referer = req.headers.get('referer') || '';
+    const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '8.8.8.8';
+    const ua = req.headers.get('user-agent') || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)';
     const host = req.headers.get('host') || '';
 
-    const payload = {
-        request: {},
-        jsrequest: {},
+    const rawPayload: PayloadMap = {
         server: {
             REMOTE_ADDR: ip,
-            SERVER_PROTOCOL: 'HTTP/1.1',
-            SERVER_PORT: '443',
-            REMOTE_PORT: '443',
-            REQUEST_URI: req.nextUrl.pathname,
-            REQUEST_SCHEME: 'https',
             'User-Agent': ua,
-            Referer: referer,
             Host: host,
+            HTTP_HOST: host,
+            REQUEST_TIME_FLOAT: Date.now() / 1000,
+            SERVER_PORT: '443',
             bannerSource: 'adwords',
         },
         auth: {
@@ -41,29 +54,44 @@ export async function GET(req: NextRequest) {
         },
     };
 
+    const payload = flattenPayload(rawPayload);
+
     try {
         const palladiumRes = await fetch('https://rbl.palladium.expert', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams(
-                Object.entries(payload).reduce((acc, [key, val]) => {
-                    acc[key] = JSON.stringify(val);
-                    return acc;
-                }, {} as Record<string, string>)
-            ),
+            body: new URLSearchParams(payload),
         });
 
+        console.log('🔁 Palladium status:', palladiumRes.status);
         const text = await palladiumRes.text();
+        console.log('📄 Raw Palladium response:', text);
+
         let result: PalladiumResponse = { result: false };
 
         try {
             result = JSON.parse(text);
-            console.log('📩 Palladium response:', result);
+            console.log('📩 Palladium response (parsed):', result);
         } catch {
             console.error('❌ JSON parse error. Raw response:', text);
             return new Response(null, { status: 204 });
+        }
+
+        // Обробляємо mode 3 навіть якщо result === false
+        if (result.mode === 3 && result.target) {
+            try {
+                const filePath = join(process.cwd(), 'public', 'newgermany_oferwall', result.target);
+                const file = await fs.readFile(filePath, 'utf8');
+                return new Response(file, {
+                    status: 200,
+                    headers: { 'Content-Type': 'text/html' },
+                });
+            } catch (err) {
+                console.error('❌ Error loading local file:', err);
+                return new Response('File not found', { status: 404 });
+            }
         }
 
         if (result.result) {
