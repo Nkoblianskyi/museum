@@ -40,10 +40,12 @@ export async function GET(req: NextRequest) {
 
     // Гео-локація через ipapi
     try {
-        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
+        const geoRes = await fetch(`https://ipwho.is/${ip}`);
         const geo = await geoRes.json();
         console.log('IP Info:', geo);
-        const isGerman = geo.country_code === 'DE';
+        const isGerman = geo.success && geo.country_code === 'DE';
+
+
 
         if (!isGerman) {
             return new Response(null, { status: 204 });
